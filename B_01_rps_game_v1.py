@@ -1,3 +1,4 @@
+import random
 
 # Check that users have entered a valid
 # option based on a list
@@ -55,6 +56,26 @@ def int_check(question, exit_code=None):
             # if the response is not an integer, displays an error
             print(error)
 
+# compared user / computer choice and returns
+# result (win/ lose/ tie)
+def rps_compare(user, comp):
+
+   # If the user and computer choice is the same, it's a tie
+   if user == comp:
+       result = "tie"
+   # There are three ways to win
+   elif user == "paper" and comp == "rock":
+       result = "win"
+   elif user == "scissors" and comp == "paper":
+       result = "win"
+   elif user == "rock" and comp == "scissors":
+       result = "win"
+   # if it's not a win / tie, then it's a loss
+   else:
+       result = "lose"
+
+   return result
+
 
 # Displays instructions
 
@@ -80,6 +101,7 @@ Press <xxx> to end the game at anytime.
 Good Luck !
 
   ''')
+
 # main routine
 
 mode = "regular"
@@ -89,6 +111,13 @@ rps_list = ("rock", "paper", "scissors", "xxx")
 print (" 💎📄✂️ Rock / Paper / Scissors Game  💎📄✂️ ")
 
 # Instructions
+# ask user if they want to see the instructions and display
+# them if requested
+want_instructions = string_checker("Do you want to read the instructions? ")
+
+# checks users enter yes (y) or no (no)
+if want_instructions == "yes":
+    instructions()
 
 # Ask user for number of rounds / infinite mode
 rounds_wanted = int_check("How many rounds?<enter for infinite>: ", "")
@@ -113,6 +142,8 @@ while rounds_played < rounds_wanted:
     else:
         rounds_heading = f"\n💕 Round {rounds_played + 1} of {rounds_wanted}💕"
     print(rounds_heading)
+    # randomly choose from the rps list ( excluding the exit code)
+    comp_choice = random.choice(rps_list[:-1])
     print()
 
     user_choice = string_checker("Choose:", rps_list)
@@ -120,6 +151,13 @@ while rounds_played < rounds_wanted:
 
     if user_choice == "xxx":
         break
+
+
+
+    result = rps_compare(user_choice, comp_choice)
+    print(f"{user_choice} vs {comp_choice}, {result}")
+
+    rounds_played += 1
 
     # if users are in infinite mode, increase number of rounds!
     if mode == "infinite":
